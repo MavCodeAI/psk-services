@@ -28,8 +28,8 @@ const HeroSection = () => {
   // Typewriter Effect Logic
   useEffect(() => {
     const currentText = textVariants[currentTextIndex];
-    const typingSpeed = isDeleting ? 50 : 100; // Faster when deleting
-    const pauseTime = 2000; // Pause at end of text
+    const typingSpeed = isDeleting ? 75 : 150; // Slower typing speed, but faster when deleting
+    const pauseTime = 2500; // Longer pause at end of text
 
     const typeWriter = () => {
       if (!isDeleting) {
@@ -129,7 +129,19 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              {displayText}
+              {displayText.split(/(\s+)/).map((word, index) => {
+                // Highlight specific words in green
+                const highlightWords = ['Digital', 'Amazing', 'Brands', 'Results', 'Innovation', 'Success'];
+                const isHighlighted = highlightWords.some(highlight =>
+                  word.toLowerCase().includes(highlight.toLowerCase())
+                );
+
+                return (
+                  <span key={index} className={isHighlighted ? 'text-gradient-animate' : ''}>
+                    {word}
+                  </span>
+                );
+              })}
               <span
                 className={`inline-block w-1 h-16 md:h-20 lg:h-24 ml-1 ${
                   showCursor ? 'bg-psyco-green-DEFAULT' : 'bg-transparent'
