@@ -1,22 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { MoveRight, Sparkles, Code, Palette } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { MagneticButton, ShineButton } from '@/components/animations/AnimatedComponents';
 
 const HeroSection = () => {
   const backgroundRef = useRef<HTMLDivElement>(null);
-  const [displayText, setDisplayText] = useState('');
-  const [showCursor, setShowCursor] = useState(true);
-  const [currentTextIndex, setCurrentTextIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const textVariants = [
-    'Transform Your Digital Presence',
-    'Create Amazing Online Experiences',
-    'Build Brands That Stand Out',
-    'Drive Results Through Innovation',
-    'Elevate Your Online Success'
-  ];
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -25,45 +13,7 @@ const HeroSection = () => {
     }
   };
   
-  // Typewriter Effect Logic
-  useEffect(() => {
-    const currentText = textVariants[currentTextIndex];
-    const typingSpeed = isDeleting ? 75 : 150; // Slower typing speed, but faster when deleting
-    const pauseTime = 2500; // Longer pause at end of text
 
-    const typeWriter = () => {
-      if (!isDeleting) {
-        // Typing
-        if (displayText.length < currentText.length) {
-          setDisplayText(currentText.slice(0, displayText.length + 1));
-        } else {
-          // Finished typing, start deleting after pause
-          setTimeout(() => setIsDeleting(true), pauseTime);
-        }
-      } else {
-        // Deleting
-        if (displayText.length > 0) {
-          setDisplayText(currentText.slice(0, displayText.length - 1));
-        } else {
-          // Finished deleting, move to next text
-          setIsDeleting(false);
-          setCurrentTextIndex((prev) => (prev + 1) % textVariants.length);
-        }
-      }
-    };
-
-    const timer = setTimeout(typeWriter, typingSpeed);
-    return () => clearTimeout(timer);
-  }, [displayText, currentTextIndex, isDeleting, textVariants]);
-
-  // Blinking cursor effect
-  useEffect(() => {
-    const cursorTimer = setInterval(() => {
-      setShowCursor(prev => !prev);
-    }, 500);
-
-    return () => clearInterval(cursorTimer);
-  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -124,30 +74,12 @@ const HeroSection = () => {
             </motion.div>
 
             <motion.h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-glow mb-6 min-h-[120px] md:min-h-[144px] lg:min-h-[168px] flex items-center"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-glow mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              {displayText.split(/(\s+)/).map((word, index) => {
-                // Highlight specific words in green
-                const highlightWords = ['Digital', 'Amazing', 'Brands', 'Results', 'Innovation', 'Success'];
-                const isHighlighted = highlightWords.some(highlight =>
-                  word.toLowerCase().includes(highlight.toLowerCase())
-                );
-
-                return (
-                  <span key={index} className={isHighlighted ? 'text-gradient-animate' : ''}>
-                    {word}
-                  </span>
-                );
-              })}
-              <span
-                className={`inline-block w-1 h-16 md:h-20 lg:h-24 ml-1 ${
-                  showCursor ? 'bg-psyco-green-DEFAULT' : 'bg-transparent'
-                } transition-colors duration-100`}
-                style={{ animation: 'none' }}
-              ></span>
+              Transform Your <span className="text-gradient-animate">Digital</span> Presence
             </motion.h1>
 
             <motion.p 
